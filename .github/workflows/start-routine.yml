@@ -1,0 +1,51 @@
+name: Start Database Servers
+
+on:
+  workflow_dispatch:  # Permite ejecución manual
+  # schedule:
+  #   # Ejecutar diariamente a las 06:00 UTC (ajusta según tu zona horaria)
+  #   - cron: '0 6 * * *'
+  push:
+    branches:
+      - develop
+      - uat
+      - master
+
+jobs:
+  start-dev:
+    if: github.ref_name != 'master'
+    uses: Nubestock/nubestock-workflows/.github/workflows/database-server-action.yml@master
+    with:
+      action: start
+      environment: dev
+      script_path: start-rutine-bd/script-dev.sh
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZ_APP_ID_TEST }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZ_APP_PWD_TEST }}
+      AZURE_TENANT_ID: ${{ secrets.AZ_TENANT_ID_TEST }}
+
+  start-uat:
+    if: github.ref_name != 'master'
+    needs: start-dev
+    uses: Nubestock/nubestock-workflows/.github/workflows/database-server-action.yml@master
+    with:
+      action: start
+      environment: uat
+      script_path: start-rutine-bd/script-uat.sh
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZ_APP_ID_TEST }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZ_APP_PWD_TEST }}
+      AZURE_TENANT_ID: ${{ secrets.AZ_TENANT_ID_TEST }}
+
+  start-prod:
+    if: github.ref_name == 'master'
+    uses: Nubestock/nubestock-workflows/.github/workflows/database-server-action.yml@master
+    with:
+      action: start
+      environment: prod
+      script_path: start-rutine-bd/script-prod.sh
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZ_APP_ID_TEST }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZ_APP_PWD_TEST }}
+      AZURE_TENANT_ID: ${{ secrets.AZ_TENANT_ID_TEST }}
+

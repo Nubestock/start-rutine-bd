@@ -18,7 +18,7 @@ jobs:
     with:
       action: start
       environment: dev
-      script_path: start-rutine-bd/script-dev.sh
+      script_path: script-dev.sh
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZ_APP_ID_TEST }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZ_APP_PWD_TEST }}
@@ -31,7 +31,7 @@ jobs:
     with:
       action: start
       environment: uat
-      script_path: start-rutine-bd/script-uat.sh
+      script_path: script-uat.sh
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZ_APP_ID_TEST }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZ_APP_PWD_TEST }}
@@ -43,7 +43,7 @@ jobs:
     with:
       action: start
       environment: prod
-      script_path: start-rutine-bd/script-prod.sh
+      script_path: script-prod.sh
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZ_APP_ID_TEST }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZ_APP_PWD_TEST }}
